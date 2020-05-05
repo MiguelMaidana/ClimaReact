@@ -1,7 +1,26 @@
-import React from "react"
-import {Text, StyleSheet, View, TextInput, Picker, TouchableWithoutFeedback} from "react-native"
+import React,{useState} from "react"
+import {Text, StyleSheet, View, TextInput, Picker, TouchableWithoutFeedback, Animated} from "react-native"
 
 const Formulario =() =>{
+
+    const [animacionBoton] = useState(new Animated.Value(1))
+
+    const animacionEntrada =()=>{
+        Animated.spring(animacionBoton,{
+            toValue: .75
+        }).start()
+    }
+    const animacionSalida =()=>{
+        Animated.spring(animacionBoton,{
+            toValue: 1,
+            friction: 1,
+            tension:30
+        }).start()
+    }
+
+    const estiloAnimacion ={
+        transform :[{scale:animacionBoton}]
+    }
 return (
 
        <>
@@ -27,10 +46,13 @@ return (
                             <Picker.Item label="Peru" value="PE"/>
                         </Picker>
                 </View>
-                    <TouchableWithoutFeedback>
-                        <View style={styles.btnBuscar}>
+                    <TouchableWithoutFeedback
+                        onPressIn ={()=> animacionEntrada()}
+                        onPressOut ={()=> animacionSalida()}
+                    >
+                        <Animated.View style={[ styles.btnBuscar,estiloAnimacion ]}>
                             <Text style={styles.textoBuscar}>Buscar Clima</Text>
-                        </View>
+                        </Animated.View>
                     </TouchableWithoutFeedback>
         </View>
        </>
